@@ -1,3 +1,13 @@
+function shuffle(list) {
+  for (let i = list.length - 1; i > 0; i--) {
+    // Swap i with a random thing in [0, i]
+    let j = Math.floor(Math.random() * (i + 1));
+    let tmp = list[i];
+    list[i] = list[j];
+    list[j] = tmp;
+  }
+}
+
 class Game {
   // deck is a map from string to count
   // this starts a new game
@@ -12,9 +22,16 @@ class Game {
       }
     }
 
-    // TODO: shuffle
-    // TODO: set up game state
+    shuffle(this.deck);
+
+    this.ourLife = 20;
+    this.theirLife = 20;
+    this.mana = 0;
+    this.stormCount = 0;
+    this.hand = [];
   }
+
+  // TODO: implement drawing
 
   // card is a string
   // this returns true or false for whether this is a valid move
