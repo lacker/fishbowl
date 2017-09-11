@@ -13,7 +13,7 @@ class Game {
   // this starts a new game
   constructor(deck) {
     // this.deck is the actual shuffled deck
-    // this.deck[0] is the top card
+    // this.deck[this.deck.length - 1] is the top card
     this.deck = [];
     for (let card in deck) {
       let count = deck[card];
@@ -31,7 +31,16 @@ class Game {
     this.hand = [];
   }
 
-  // TODO: implement drawing
+  draw(number) {
+    if (number === undefined) {
+      number = 1;
+    }
+    for (let i = 0; i < number; i++) {
+      this.hand.push(this.deck.pop());
+    }
+
+    // TODO: implement losing if you cannot draw
+  }
 
   // card is a string
   // this returns true or false for whether this is a valid move
