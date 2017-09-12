@@ -31,15 +31,19 @@ class Game {
     this.hand = [];
   }
 
+  // Returns whether we could or not
   draw(number) {
     if (number === undefined) {
       number = 1;
     }
     for (let i = 0; i < number; i++) {
+      if (this.deck.length === 0) {
+        return false;
+      }
       this.hand.push(this.deck.pop());
     }
 
-    // TODO: implement losing if you cannot draw
+    return true;
   }
 
   // card is a string
