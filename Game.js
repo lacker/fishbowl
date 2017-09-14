@@ -163,10 +163,33 @@ class Game {
   }
 }
 
-let game = new Game({
+// Calculates a win rate.
+// radius is the radius of the confidence interval of 2 std devs.
+// std dev = root ( p * (1-p) / n )
+function winrate(config, radius) {
+  let wins = 0;
+  let n = 0;
+  while (true) {
+    let game = new Game(config);
+    if (game.autoplay()) {
+      wins += 1;
+    }
+    n += 1;
+
+    let p = wins / n;
+    let stdDev = Math.sqrt(p * (1 - p) / n);
+    console.log('wins: ' + wins + ' / ' + n);
+    console.log('p = ' + p);
+    console.log('std dev: ' + stdDev);
+    if (stdDev > 0 && stdDev * 2 < radius) {
+      return p;
+    }
+  }
+}
+
+winrate({
   'petal': 15,
   'ritual': 20,
   'contract': 15,
   'tendrils': 10,
-});
-game.autoplay();
+}, 0.001);
