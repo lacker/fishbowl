@@ -122,7 +122,7 @@ class Game {
     // Remove from the hand
     this.hand.splice(index, 1);
     console.log('played ' + card);
-    this.log();
+    // this.log();
     return true;
   }
 
@@ -154,10 +154,12 @@ class Game {
         continue;
       }
 
+      this.log();
       console.log('We fizzled.');
       return false;
     }
 
+    this.log();
     console.log('We won.');
     return true;
   }
@@ -182,6 +184,7 @@ function winrate(config, radius) {
     console.log('p = ' + p);
     console.log('std dev: ' + stdDev);
     if (stdDev > 0 && stdDev * 2 < radius) {
+      console.log(config);
       return p;
     }
   }
@@ -190,6 +193,6 @@ function winrate(config, radius) {
 winrate({
   'petal': 15,
   'ritual': 20,
-  'contract': 15,
-  'tendrils': 10,
-}, 0.001);
+  'contract': 20,
+  'tendrils': 5,
+}, 0.002);
