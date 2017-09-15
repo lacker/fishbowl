@@ -204,6 +204,7 @@ function winrate(config, radius) {
     console.log('std dev: ' + stdDev);
     if (stdDev > 0 && stdDev * 2 < radius) {
       console.log(config);
+      console.log('winning it: ' + (wins / n));
       console.log('empty hand: ' + (emptyHand / n));
       console.log('dead start: ' + (deadStart / n));
       console.log('lacks mana: ' + (lowMana / n));
