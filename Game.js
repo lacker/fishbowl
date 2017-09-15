@@ -171,10 +171,29 @@ class Game {
 function winrate(config, radius) {
   let wins = 0;
   let n = 0;
+  let emptyHand = 0;
+  let deadStart = 0;
+  let lowMana = 0;
+  let lowOnLife = 1;
+  let other = 0;
   while (true) {
     let game = new Game(config);
     if (game.autoplay()) {
       wins += 1;
+    } else {
+      // Count why we lose
+      if (game.hand.length === 0) {
+        emptyHand += 1;
+      } else if (game.stormCount === 0) {
+        deadStart += 1;
+      } else if (game.mana < 3) {
+        lowMana += 1;
+      } else if (game.ourLife === 1) {
+        lowOnLife += 1;
+      } else {
+        // This seems to be stuck on 3 mana with only tendrils
+        other += 1;
+      }
     }
     n += 1;
 
@@ -185,6 +204,11 @@ function winrate(config, radius) {
     console.log('std dev: ' + stdDev);
     if (stdDev > 0 && stdDev * 2 < radius) {
       console.log(config);
+      console.log('empty hand: ' + (emptyHand / n));
+      console.log('dead start: ' + (deadStart / n));
+      console.log('lacks mana: ' + (lowMana / n));
+      console.log('lacks life: ' + (lowOnLife / n));
+      console.log('dunno what: ' + (other / n));
       return p;
     }
   }
