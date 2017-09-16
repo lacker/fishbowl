@@ -55,6 +55,22 @@ class Game {
   // it does check for casting cost though
   enactEffect(card) {
     switch (card) {
+      case 'mulligan':
+        if (this.stormCount > 0) {
+          return false;
+        }
+        let numCards = this.hand.length - 1;
+        if (numCards < 0) {
+          return false;
+        }
+        while (this.hand.length > 0) {
+          this.deck.push(this.hand.pop());
+        }
+        shuffle(this.deck);
+        this.draw(numCards);
+        // TODO: scrying
+        return true;
+
       case 'ritual':
         if (this.mana < 1) {
           return false;
