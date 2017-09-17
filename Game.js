@@ -128,7 +128,7 @@ class Game {
   // returns true or false for whether it was possible
   play(card) {
     let index = this.hand.indexOf(card);
-    if (index < 0) {
+    if (card !== 'mulligan' && index < 0) {
       return false;
     }
     if (!this.enactEffect(card)) {
@@ -152,6 +152,9 @@ class Game {
   // Returns whether we win the game
   autoplay() {
     this.draw(7);
+    while (this.hand.length > 0 && this.hand.indexOf('petal') < 0) {
+      this.play('mulligan');
+    }
     console.log('initial hand: ' + this.hand.join(','));
     while (this.theirLife > 0) {
       if (this.play('petal')) {
