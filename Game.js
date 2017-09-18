@@ -157,6 +157,11 @@ class Game {
       // No way to get more cards
       return true;
     }
+    if (!this.holding('petal')) {
+      // No way to get initial mana
+      return true;
+    }
+
     let mana = 0;
     for (let card of this.hand) {
       if (card === 'petal') {
