@@ -148,11 +148,37 @@ class Game {
     console.log('hand: ' + this.hand.join(','));
   }
 
+  shouldMulligan() {
+    if (this.hand.length === 0) {
+      // We can't
+      return false;
+    }
+    if (!this.holding('contract')) {
+      // No way to get more cards
+      return true;
+    }
+    let mana = 0;
+    for (let card of this.hand) {
+      if (card === 'petal') {
+        mana += 1;
+      } else if (card === 'ritual') {
+        mana += 2;
+      }
+    }
+    if (mana < 3) {
+      // No way to get enough mana to contract
+      return true;
+    }
+
+    // I guess just keep it
+    return false;
+  }
+
   // Simulates on-the-play
   // Returns whether we win the game
   autoplay() {
     this.draw(7);
-    while (this.hand.length > 0 && this.hand.indexOf('petal') < 0) {
+    while (this.shouldMulligan()) {
       this.play('mulligan');
     }
     console.log('initial hand: ' + this.hand.join(','));
