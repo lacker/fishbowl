@@ -215,59 +215,69 @@ class Game {
   }
 }
 
-// Calculates a win rate.
-// radius is the radius of the confidence interval of 2 std devs.
-// std dev = root ( p * (1-p) / n )
-function winrate(config, radius) {
-  let wins = 0;
-  let n = 0;
-  let emptyHand = 0;
-  let deadStart = 0;
-  let lowMana = 0;
-  let lowOnLife = 1;
-  let other = 0;
-  while (true) {
+class Tester {
+  constructor(config) {
+    this.wins = 0;
+    this.n = 0;
+    this.emptyHand = 0;
+    this.deadStart = 0;
+    this.lowMana = 0;
+    this.lowOnLife = 0;
+    this.other = 0;
+  }
+
+  runOne() {
     let game = new Game(config);
     if (game.autoplay()) {
-      wins += 1;
+      this.wins += 1;
     } else {
       // Count why we lose
       if (game.hand.length === 0) {
-        emptyHand += 1;
+        this.emptyHand += 1;
       } else if (game.stormCount === 0) {
-        deadStart += 1;
+        this.deadStart += 1;
       } else if (game.mana < 3) {
-        lowMana += 1;
+        this.lowMana += 1;
       } else if (game.ourLife === 1) {
-        lowOnLife += 1;
+        this.lowOnLife += 1;
       } else {
         // This seems to be stuck on 3 mana with only tendrils
-        other += 1;
+        this.other += 1;
       }
     }
-    n += 1;
+    this.n += 1;
+  }
 
-    let p = wins / n;
-    let stdDev = Math.sqrt(p * (1 - p) / n);
-    console.log('wins: ' + wins + ' / ' + n);
-    console.log('p = ' + p);
-    console.log('std dev: ' + stdDev);
-    if (stdDev > 0 && stdDev * 2 < radius) {
-      console.log(config);
-      console.log('winning it: ' + (wins / n));
-      console.log('empty hand: ' + (emptyHand / n));
-      console.log('dead start: ' + (deadStart / n));
-      console.log('lacks mana: ' + (lowMana / n));
-      console.log('lacks life: ' + (lowOnLife / n));
-      console.log('dunno what: ' + (other / n));
-      return p;
+  // Calculates a win rate.
+  // radius is the radius of the confidence interval of 2 std devs.
+  // std dev = root ( p * (1-p) / n )
+  winrate(radius) {
+    while (true) {
+      this.runOne();
+
+      let p = wins / n;
+      let stdDev = Math.sqrt(p * (1 - p) / n);
+      console.log('wins: ' + wins + ' / ' + n);
+      console.log('p = ' + p);
+      console.log('std dev: ' + stdDev);
+      if (stdDev > 0 && stdDev * 2 < radius) {
+        console.log(config);
+        console.log('winning it: ' + (wins / n));
+        console.log('empty hand: ' + (emptyHand / n));
+        console.log('dead start: ' + (deadStart / n));
+        console.log('lacks mana: ' + (lowMana / n));
+        console.log('lacks life: ' + (lowOnLife / n));
+        console.log('dunno what: ' + (other / n));
+        return p;
+      }
     }
   }
 }
 
-winrate({
+let tester = new Tester({
   'petal': 15,
   'ritual': 20,
   'contract': 20,
   'tendrils': 5,
-}, 0.002);
+});
+tester.winrate(0.002);
