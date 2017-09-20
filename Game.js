@@ -217,6 +217,7 @@ class Game {
 
 class Tester {
   constructor(config) {
+    this.config = config;
     this.wins = 0;
     this.n = 0;
     this.emptyHand = 0;
@@ -227,7 +228,7 @@ class Tester {
   }
 
   runOne() {
-    let game = new Game(config);
+    let game = new Game(this.config);
     if (game.autoplay()) {
       this.wins += 1;
     } else {
