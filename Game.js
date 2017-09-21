@@ -249,15 +249,26 @@ class Tester {
     this.n += 1;
   }
 
+  // The win rate
+  winRate() {
+    return wins / n;
+  }
+
+  // The std deviation of the win rate
+  stdDev() {
+    let p = this.winRate();
+    return Math.sqrt(p * (1 - p) / n);
+  }
+
   // Calculates a win rate.
   // radius is the radius of the confidence interval of 2 std devs.
   // std dev = root ( p * (1-p) / n )
-  winrate(radius) {
+  calculate(radius) {
     while (true) {
       this.runOne();
 
-      let p = wins / n;
-      let stdDev = Math.sqrt(p * (1 - p) / n);
+      let p = this.winRate();
+      let stdDev = this.stdDev();
       console.log('wins: ' + wins + ' / ' + n);
       console.log('p = ' + p);
       console.log('std dev: ' + stdDev);
@@ -281,4 +292,4 @@ let tester = new Tester({
   'contract': 20,
   'tendrils': 5,
 });
-tester.winrate(0.002);
+tester.calculate(0.002);
