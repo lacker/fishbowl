@@ -286,6 +286,20 @@ class Tester {
   }
 }
 
+function compare(config1, config2) {
+  let tester1 = new Tester(config1);
+  let tester2 = new Tester(config2);
+  while (true) {
+    tester1.runOne();
+    tester2.runOne();
+    let s = tester1.stdDev() + tester2.stdDev();
+    let diff = tester1.winRate() - tester2.winRate();
+    if (Math.abs(diff) > 2 * s) {
+      // TODO
+    }
+  }
+}
+
 let tester = new Tester({
   'petal': 15,
   'ritual': 20,
