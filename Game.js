@@ -295,7 +295,13 @@ function compare(config1, config2) {
     let s = tester1.stdDev() + tester2.stdDev();
     let diff = tester1.winRate() - tester2.winRate();
     if (Math.abs(diff) > 2 * s) {
-      // TODO
+      if (tester1.winRate() > tester2.winRate()) {
+        console.log('winner: ' + JSON.stringify(config1));
+      } else {
+        console.log('winner: ' + JSON.stringify(config2));
+      }
+      // TODO: refasctor out some info printinng
+      return;
     }
   }
 }
