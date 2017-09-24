@@ -260,6 +260,21 @@ class Tester {
     return Math.sqrt(p * (1 - p) / n);
   }
 
+  log() {
+    let p = this.winRate();
+    let stdDev = this.stdDev();
+    console.log(this.config);
+    console.log('wins: ' + this.wins + ' / ' + this.n);
+    console.log('p = ' + p);
+    console.log('std dev: ' + stdDev);
+    console.log('winning it: ' + (this.wins / n));
+    console.log('empty hand: ' + (this.emptyHand / n));
+    console.log('dead start: ' + (this.deadStart / n));
+    console.log('lacks mana: ' + (this.lowMana / n));
+    console.log('lacks life: ' + (this.lowOnLife / n));
+    console.log('dunno what: ' + (this.other / n));
+  }
+
   // Calculates a win rate.
   // radius is the radius of the confidence interval of 2 std devs.
   // std dev = root ( p * (1-p) / n )
@@ -269,17 +284,8 @@ class Tester {
 
       let p = this.winRate();
       let stdDev = this.stdDev();
-      console.log('wins: ' + wins + ' / ' + n);
-      console.log('p = ' + p);
-      console.log('std dev: ' + stdDev);
       if (stdDev > 0 && stdDev * 2 < radius) {
-        console.log(config);
-        console.log('winning it: ' + (wins / n));
-        console.log('empty hand: ' + (emptyHand / n));
-        console.log('dead start: ' + (deadStart / n));
-        console.log('lacks mana: ' + (lowMana / n));
-        console.log('lacks life: ' + (lowOnLife / n));
-        console.log('dunno what: ' + (other / n));
+        this.log();
         return p;
       }
     }
@@ -295,21 +301,30 @@ function compare(config1, config2) {
     let s = tester1.stdDev() + tester2.stdDev();
     let diff = tester1.winRate() - tester2.winRate();
     if (Math.abs(diff) > 2 * s) {
+      tester1.log();
+      tester2.log();
       if (tester1.winRate() > tester2.winRate()) {
         console.log('winner: ' + JSON.stringify(config1));
       } else {
         console.log('winner: ' + JSON.stringify(config2));
       }
-      // TODO: refasctor out some info printinng
       return;
     }
   }
 }
 
-let tester = new Tester({
+let config1 = {
   'petal': 15,
   'ritual': 20,
   'contract': 20,
   'tendrils': 5,
-});
-tester.calculate(0.002);
+};
+let config2 = {
+  'petal': 10,
+  'ritual': 25,
+  'contract': 20,
+  'tendrils': 5,
+};
+compare(config1, config2);
+
+// TODO: test
