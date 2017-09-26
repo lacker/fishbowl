@@ -251,13 +251,13 @@ class Tester {
 
   // The win rate
   winRate() {
-    return wins / n;
+    return this.wins / this.n;
   }
 
   // The std deviation of the win rate
   stdDev() {
     let p = this.winRate();
-    return Math.sqrt(p * (1 - p) / n);
+    return Math.sqrt(p * (1 - p) / this.n);
   }
 
   log() {
@@ -267,12 +267,12 @@ class Tester {
     console.log('wins: ' + this.wins + ' / ' + this.n);
     console.log('p = ' + p);
     console.log('std dev: ' + stdDev);
-    console.log('winning it: ' + (this.wins / n));
-    console.log('empty hand: ' + (this.emptyHand / n));
-    console.log('dead start: ' + (this.deadStart / n));
-    console.log('lacks mana: ' + (this.lowMana / n));
-    console.log('lacks life: ' + (this.lowOnLife / n));
-    console.log('dunno what: ' + (this.other / n));
+    console.log('winning it: ' + (this.wins / this.n));
+    console.log('empty hand: ' + (this.emptyHand / this.n));
+    console.log('dead start: ' + (this.deadStart / this.n));
+    console.log('lacks mana: ' + (this.lowMana / this.n));
+    console.log('lacks life: ' + (this.lowOnLife / this.n));
+    console.log('dunno what: ' + (this.other / this.n));
   }
 
   // Calculates a win rate.
@@ -327,4 +327,4 @@ let config2 = {
 };
 compare(config1, config2);
 
-// TODO: test
+// TODO: test until results are consistent
