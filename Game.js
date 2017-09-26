@@ -256,6 +256,10 @@ class Tester {
 
   // The std deviation of the win rate
   stdDev() {
+    if (this.n < 5) {
+      // Don't believe the model
+      return 1.0;
+    }
     let p = this.winRate();
     return Math.sqrt(p * (1 - p) / this.n);
   }
@@ -300,7 +304,7 @@ function compare(config1, config2) {
     tester2.runOne();
     let s = tester1.stdDev() + tester2.stdDev();
     let diff = tester1.winRate() - tester2.winRate();
-    if (Math.abs(diff) > 2 * s) {
+    if (Math.abs(diff) > 3 * s) {
       tester1.log();
       tester2.log();
       if (tester1.winRate() > tester2.winRate()) {
