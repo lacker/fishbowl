@@ -304,7 +304,7 @@ function compare(config1, config2) {
     tester2.runOne();
     let s = tester1.stdDev() + tester2.stdDev();
     let diff = tester1.winRate() - tester2.winRate();
-    if (Math.abs(diff) > 3 * s) {
+    if (Math.abs(diff) > 4 * s) {
       tester1.log();
       tester2.log();
       if (tester1.winRate() > tester2.winRate()) {
@@ -315,6 +315,25 @@ function compare(config1, config2) {
       return;
     }
   }
+}
+
+function mutate(map) {
+  let keys = [];
+  for (let key in map) {
+    keys.push(key);
+  }
+  shuffle(keys);
+  let key1 = keys[0];
+  let key2 = keys[1];
+
+  let answer = JSON.parse(JSON.stringify(map));
+  answer[key1] -= 1;
+  answer[key2] += 1;
+  if (answer[key1] < 0) {
+    // This one's invalid, try again
+    return mutate(map);
+  }
+  return answer;
 }
 
 let config1 = {
@@ -331,4 +350,4 @@ let config2 = {
 };
 compare(config1, config2);
 
-// TODO: test until results are consistent
+// TODO: use mutate
