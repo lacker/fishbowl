@@ -296,6 +296,7 @@ class Tester {
   }
 }
 
+// Returns -1 if config1 is better, 1 if config2 is
 function compare(config1, config2) {
   let tester1 = new Tester(config1);
   let tester2 = new Tester(config2);
@@ -309,10 +310,11 @@ function compare(config1, config2) {
       tester2.log();
       if (tester1.winRate() > tester2.winRate()) {
         console.log('winner: ' + JSON.stringify(config1));
+        return -1;
       } else {
         console.log('winner: ' + JSON.stringify(config2));
+        return 1;
       }
-      return;
     }
   }
 }
