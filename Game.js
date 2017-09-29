@@ -338,18 +338,25 @@ function mutate(map) {
   return answer;
 }
 
-let config1 = {
-  'petal': 15,
-  'ritual': 20,
-  'contract': 20,
-  'tendrils': 5,
-};
-let config2 = {
-  'petal': 10,
-  'ritual': 25,
-  'contract': 20,
-  'tendrils': 5,
-};
-compare(config1, config2);
+function evolve() {
+  let config = {
+    'petal': 15,
+    'ritual': 20,
+    'contract': 20,
+    'tendrils': 5,
+  };
 
-// TODO: use mutate
+  while (true) {
+    newConfig = mutate(config);
+    if (compare(config, newConfig) < 0) {
+      // config is better
+      console.log('keep the old config:');
+    } else {
+      console.log('use the new config:');
+      config = newConfig;
+    }
+    console.log(config);
+  }
+}
+
+evolve();
