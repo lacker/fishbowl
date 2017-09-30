@@ -31,6 +31,13 @@ class Game {
     this.mana = 0;
     this.stormCount = 0;
     this.hand = [];
+    this.verbose = true;
+  }
+
+  log(message) {
+    if (this.verbose) {
+      console.log(message);
+    }
   }
 
   // Returns whether we could or not
@@ -137,15 +144,15 @@ class Game {
 
     // Remove from the hand
     this.hand.splice(index, 1);
-    console.log('played ' + card);
-    // this.log();
+    this.log('played ' + card);
+    // this.logInfo();
     return true;
   }
 
-  log() {
-    console.log('life: ' + this.ourLife + ' - ' + this.theirLife);
-    console.log(this.mana + ' mana, ' + this.stormCount + ' storm count');
-    console.log('hand: ' + this.hand.join(','));
+  logInfo() {
+    this.log('life: ' + this.ourLife + ' - ' + this.theirLife);
+    this.log(this.mana + ' mana, ' + this.stormCount + ' storm count');
+    this.log('hand: ' + this.hand.join(','));
   }
 
   shouldMulligan() {
@@ -186,7 +193,7 @@ class Game {
     while (this.shouldMulligan()) {
       this.play('mulligan');
     }
-    console.log('initial hand: ' + this.hand.join(','));
+    this.log('initial hand: ' + this.hand.join(','));
     while (this.theirLife > 0) {
       if (this.play('petal')) {
         continue;
@@ -204,13 +211,13 @@ class Game {
         continue;
       }
 
-      this.log();
-      console.log('We fizzled.');
+      this.logInfo();
+      this.log('We fizzled.');
       return false;
     }
 
-    this.log();
-    console.log('We won.');
+    this.logInfo();
+    this.log('We won.');
     return true;
   }
 }
@@ -264,7 +271,7 @@ class Tester {
     return Math.sqrt(p * (1 - p) / this.n);
   }
 
-  log() {
+  logInfo() {
     let p = this.winRate();
     let stdDev = this.stdDev();
     console.log(this.config);
@@ -289,7 +296,7 @@ class Tester {
       let p = this.winRate();
       let stdDev = this.stdDev();
       if (stdDev > 0 && stdDev * 2 < radius) {
-        this.log();
+        this.logInfo();
         return p;
       }
     }
@@ -306,8 +313,8 @@ function compare(config1, config2) {
     let s = tester1.stdDev() + tester2.stdDev();
     let diff = tester1.winRate() - tester2.winRate();
     if (Math.abs(diff) > 4 * s) {
-      tester1.log();
-      tester2.log();
+      tester1.logInfo();
+      tester2.logInfo();
       if (tester1.winRate() > tester2.winRate()) {
         console.log('winner: ' + JSON.stringify(config1));
         return -1;
