@@ -236,6 +236,7 @@ class Tester {
 
   runOne() {
     let game = new Game(this.config);
+    game.verbose = false;
     if (game.autoplay()) {
       this.wins += 1;
     } else {
@@ -274,16 +275,16 @@ class Tester {
   logInfo() {
     let p = this.winRate();
     let stdDev = this.stdDev();
-    console.log(this.config);
-    console.log('wins: ' + this.wins + ' / ' + this.n);
-    console.log('p = ' + p);
-    console.log('std dev: ' + stdDev);
-    console.log('winning it: ' + (this.wins / this.n));
-    console.log('empty hand: ' + (this.emptyHand / this.n));
-    console.log('dead start: ' + (this.deadStart / this.n));
-    console.log('lacks mana: ' + (this.lowMana / this.n));
-    console.log('lacks life: ' + (this.lowOnLife / this.n));
-    console.log('dunno what: ' + (this.other / this.n));
+    this.log(this.config);
+    this.log('wins: ' + this.wins + ' / ' + this.n);
+    this.log('p = ' + p);
+    this.log('std dev: ' + stdDev);
+    this.log('winning it: ' + (this.wins / this.n));
+    this.log('empty hand: ' + (this.emptyHand / this.n));
+    this.log('dead start: ' + (this.deadStart / this.n));
+    this.log('lacks mana: ' + (this.lowMana / this.n));
+    this.log('lacks life: ' + (this.lowOnLife / this.n));
+    this.log('dunno what: ' + (this.other / this.n));
   }
 
   // Calculates a win rate.
