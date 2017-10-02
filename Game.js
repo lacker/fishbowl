@@ -232,6 +232,7 @@ class Tester {
     this.lowMana = 0;
     this.lowOnLife = 0;
     this.other = 0;
+    this.verbose = true;
   }
 
   runOne() {
@@ -270,6 +271,12 @@ class Tester {
     }
     let p = this.winRate();
     return Math.sqrt(p * (1 - p) / this.n);
+  }
+
+  log(message) {
+    if (this.verbose) {
+      console.log(message);
+    }
   }
 
   logInfo() {
