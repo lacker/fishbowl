@@ -331,6 +331,11 @@ function compare(config1, config2) {
         return 1;
       }
     }
+    if (tester1.n % 100000 === 0) {
+      console.log('partway report:');
+      tester1.logInfo();
+      tester2.logInfo();
+    }
   }
 }
 
