@@ -332,8 +332,10 @@ function compare(config1, config2) {
       }
     }
     if (tester1.n % 100000 === 0) {
-      console.log('partway report:');
+      console.log('****************** partway report:');
+      console.log('old config:');
       tester1.logInfo();
+      console.log('new config:');
       tester2.logInfo();
     }
   }
@@ -360,10 +362,10 @@ function mutate(map) {
 
 function evolve() {
   let config = {
-    'petal': 15,
-    'ritual': 20,
-    'contract': 20,
-    'tendrils': 5,
+    'petal': 17,
+    'ritual': 21,
+    'contract': 15,
+    'tendrils': 7,
   };
 
   while (true) {
