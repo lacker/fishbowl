@@ -312,6 +312,7 @@ class Tester {
 }
 
 // Returns -1 if config1 is better, 1 if config2 is
+// config1 should be the "better one"
 function compare(config1, config2) {
   let tester1 = new Tester(config1);
   let tester2 = new Tester(config2);
@@ -320,7 +321,8 @@ function compare(config1, config2) {
     tester2.runOne();
     let s = tester1.stdDev() + tester2.stdDev();
     let diff = tester1.winRate() - tester2.winRate();
-    if (Math.abs(diff) > 4 * s) {
+    let d = Math.abs(diff) / s;
+    if ((tester1.winRate() > tester2.winRate() && d > 2) || d > 4) {
       tester1.logInfo();
       tester2.logInfo();
       if (tester1.winRate() > tester2.winRate()) {
@@ -332,7 +334,7 @@ function compare(config1, config2) {
       }
     }
     if (tester1.n % 100000 === 0) {
-      console.log('****************** partway report:');
+      console.log('****************** partway report with d = ' + d);
       console.log('old config:');
       tester1.logInfo();
       console.log('new config:');
@@ -360,10 +362,24 @@ function mutate(map) {
   return answer;
 }
 
+// TODO: use this
+function configKey(config) {
+  let keys = [];
+  for (let key in config) {
+    keys.push(key);
+  }
+  keys.sort();
+  let answer = '';
+  for (let key of keys) {
+    answer += key + '=' + config[key] + ';';
+  }
+  return answer;
+}
+
 function evolve() {
   let config = {
-    'petal': 17,
-    'ritual': 21,
+    'petal': 19,
+    'ritual': 19,
     'contract': 15,
     'tendrils': 7,
   };
