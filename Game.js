@@ -384,10 +384,20 @@ function evolve() {
     'tendrils': 7,
   };
 
+  let rejected = new Set();
+
   while (true) {
-    newConfig = mutate(config);
+    while (true) {
+      newConfig = mutate(config);
+      newConfigKey = configKey(newConfig);
+      if (rejected.has(newConfig) && Math.random() < 0.95) {
+        continue;
+      } else {
+        break;
+      }
     if (compare(config, newConfig) < 0) {
       // config is better
+      rejected.add(newConfigKey);
       console.log('keep the old config:');
     } else {
       console.log('use the new config:');
