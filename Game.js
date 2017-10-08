@@ -390,7 +390,7 @@ function evolve() {
     while (true) {
       newConfig = mutate(config);
       newConfigKey = configKey(newConfig);
-      if (rejected.has(newConfig) && Math.random() < 0.95) {
+      if (rejected.has(newConfig) && Math.random() < 0.99) {
         continue;
       } else {
         break;
